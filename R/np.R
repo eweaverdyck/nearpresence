@@ -48,6 +48,7 @@
 #' @seealso \code{\link{IDW_nnear}}, \code{\link{IDW_radius}}
 #' @author Eli Weaverdyck \email{eweaverdyck@@gmail.com}
 #' @examples
+#' # With nearest neighbor distance weighting
 #' NP(chron = chron,
 #'   chron_ID = "Survey_Uni",
 #'   periods = c("Clas", "Hell", "Cl_He", "ER", "MR", "LR", "LR_EB"),
@@ -56,6 +57,8 @@
 #'   swl = IDW_nnear(tracts = tracts, tracts_ID = "UnitID", n = 8),
 #'   perms = 100,
 #'   cut = 0.05)
+#'
+#' # With threshold radius distance weighting
 #' NP(chron = chron,
 #'   chron_ID = "Survey_Uni",
 #'   periods = c("Clas", "Hell", "Cl_He", "ER", "MR", "LR", "LR_EB"),

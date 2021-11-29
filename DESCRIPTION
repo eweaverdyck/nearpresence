@@ -19,7 +19,7 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Imports: 
     checkmate,
     devtools,
@@ -33,4 +33,4 @@ Suggests:
     knitr
 VignetteBuilder: knitr
 URL: https://github.com/eweaverdyck/nearpresence
-BugReports:https://github.com/eweaverdyck/nearpresence/issues
+BugReports: https://github.com/eweaverdyck/nearpresence/issues
