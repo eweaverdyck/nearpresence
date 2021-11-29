@@ -23,21 +23,25 @@ The following plot shows the distribution of units with Classical-period
 material in a portion of the survey area:
 
 ``` r
+library(nearpresence)
+library(sf)
+#> Warning: package 'sf' was built under R version 4.0.5
+#> Linking to GEOS 3.9.0, GDAL 3.2.1, PROJ 7.2.1
 data(tracts)
 data(chron)
+tr.chr<-merge(tracts, chron, by.x = "UnitID", by.y = "Survey_Uni")
 par(xpd=TRUE)
-plot(merge(tracts, chron, by.x = "UnitID", by.y = "Survey_Uni")["Clas"])
+plot(tr.chr["Clas"])
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
 
 Spatial structure is difficult to discern. Near Presence Cluster
 Analysis identifies units that have Classical-period material present
-and have more neighbors with Classcial-material than would be expected
+and have more neighbors with Classical-material than would be expected
 under conditions of complete spatial randomness.
 
 ``` r
-library(nearpresence)
 data(tracts)
 data(chron)
 np<-NP(chron = chron,
@@ -63,7 +67,7 @@ legend("topleft",
        inset = c(-0.1, -0.1))
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 ## Overview
 

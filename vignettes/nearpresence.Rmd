@@ -4,7 +4,7 @@ author: "Eli Weaverdyck"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{nearpresence}
+  %\VignetteIndexEntry{Near Presence Analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
