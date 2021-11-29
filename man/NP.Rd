@@ -64,6 +64,7 @@ i.e., X_Res == "Present, High NP" OR neighboring tract == "Present, High NP"
 }
 }
 \examples{
+# With nearest neighbor distance weighting
 NP(chron = chron,
   chron_ID = "Survey_Uni",
   periods = c("Clas", "Hell", "Cl_He", "ER", "MR", "LR", "LR_EB"),
@@ -72,6 +73,8 @@ NP(chron = chron,
   swl = IDW_nnear(tracts = tracts, tracts_ID = "UnitID", n = 8),
   perms = 100,
   cut = 0.05)
+
+# With threshold radius distance weighting
 NP(chron = chron,
   chron_ID = "Survey_Uni",
   periods = c("Clas", "Hell", "Cl_He", "ER", "MR", "LR", "LR_EB"),

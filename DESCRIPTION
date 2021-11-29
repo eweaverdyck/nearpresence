@@ -7,19 +7,20 @@ Authors@R:
            role = c("aut", "cre"),
            email = "eweaverdyck@gmail.com",
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: This package performs Near Presence Cluster Analysis, a method of
+Description: Performs Near Presence Cluster Analysis, a method of
     identifying clustering in irregularly distributed, areal units with
-    presence / absence data. `IDW_nnear` calculates the inverse distance from
-    every unit to its n nearest neighbors. `IDW_radius` calculates the inverse distance from every unit to every other unit within a specified distance. The output is a spatial weights
-    list. `NP` uses this spatial weights list to weight presence / absence data
-    to calculate a near pesence (NP) score for every unit. NP outputs a spatial
-    object with a variety of attributes describing the significance of the NP
-    scores and cluster membership.
+    presence / absence data. IDW_nnear() calculates the inverse distance from
+    every unit to its n nearest neighbors. IDW_radius() calculates the inverse 
+    distance from every unit to every other unit within a specified distance. 
+    The output is a spatial weights list. NP() uses this spatial weights list to
+    weight presence/absence data to calculate a near pesence (NP) score for 
+    every unit. NP outputs a spatial object with a variety of attributes 
+    describing the significance of the NP scores and cluster membership.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Imports: 
     checkmate,
     devtools,
@@ -33,4 +34,4 @@ Suggests:
     knitr
 VignetteBuilder: knitr
 URL: https://github.com/eweaverdyck/nearpresence
-BugReports:https://github.com/eweaverdyck/nearpresence/issues
+BugReports: https://github.com/eweaverdyck/nearpresence/issues

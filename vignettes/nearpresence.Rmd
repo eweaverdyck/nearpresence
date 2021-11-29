@@ -1,7 +1,7 @@
 ---
 title: "Near Presence Analysis"
 author: "Eli Weaverdyck"
-date: "November 2021"
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Near Presence Analysis}
@@ -15,14 +15,14 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-
 ```{r setup}
 library(nearpresence)
 ```
+
 # Introduction
 The nearpresence package was built to conduct Near Presence Cluster Analysis (NPCA), a statistical technique for identifying spatial clustering in binary presence / absence data observed in irregularly distributed polygonal units that may or may not be contiguous.  
 
-It was designed in the context of an archaeological surface survey, where rectangular observation units (‘tracts’) are distributed across a landscape, and data is recorded at the level of those tracts. Tracts rarely cover a landscape entirely. Rather, they are distributed according to a sampling strategy (Banning 2002, ## for an overview of sampling strategies) that often produces an irregular distribution of observations consisting of both contiguous and non-contiguous sets of tracts. This makes it difficult to deploy common spatial-statistical techniques, which are usually designed for situations in which the observation units are contiguous and completely cover the area of investigation, e.g., census tracts or urban neighborhoods.  
+It was designed in the context of an archaeological surface survey, where rectangular observation units (‘tracts’) are distributed across a landscape, and data is recorded at the level of those tracts. Tracts rarely cover a landscape entirely. Rather, they are distributed according to a sampling strategy (see Banning 2002 for an overview of sampling strategies) that often produces an irregular distribution of observations consisting of both contiguous and non-contiguous sets of tracts. This makes it difficult to deploy common spatial-statistical techniques, which are usually designed for situations in which the observation units are contiguous and completely cover the area of investigation, e.g., census tracts or urban neighborhoods.  
 
 NPCA addresses similar questions as Local Indicators of Spatial Association (LISA) in the sense of Anselin 1995. However, in contrast to most LISAs, the property measured is not the similarity between a certain unit of observation and its neighbors, but the relative proportions of presence and absence in a unit’s neighbors weighted by the distances to those neighbors. The presence / absence categorization of the unit itself enters at a later stage in the interpretive process. This is useful for an iterative investigation strategy because it highlights units that are near clusters, and therefore may repay further investigation, even if they do not contain the material under investigation.  
 
@@ -60,14 +60,17 @@ The NP score is calculated for each tract individually. It is the weighted avera
 $$NP_i = \frac{1}{n} \sum_{i}^{n} w_j x_j$$
 where *n* is the is the number of neighbors *x*. Weights (*w*) are the inverse of the distances to each neighbor plus 1, to avoid dividing by 0:
 $$w_j = \frac{1}{d_{ij} + 1}$$
+
 ## Determining significance
-The value of the NP score depends not only on the presences and absences of neighboring tracts, but the spatial relationships between the tract and its neighbors. When tracts are irregularly distributed, these relationships can be very idiosyncratic, so it is inappropriate to compare NP scores to each other. To determine whether a NP score should be seen as high or low, it must be compared to a distribution of NP scores that would be observed for that tract if the presences and absences were randomly distributed across the entire study area, i.e., a permutation test. `sample`, with `size` equal to the number of tracts, is used to generate a comparison distribution with the observed number of presences and absences.   
+The value of the NP score depends not only on the presences and absences of neighboring tracts, but the spatial relationships between the tract and its neighbors. When tracts are irregularly distributed, these relationships can be very idiosyncratic, so it is inappropriate to compare NP scores to each other. To determine whether a NP score should be seen as high or low, it must be compared to a distribution of NP scores that would be observed for that tract if the presences and absences were randomly distributed across the entire study area, i.e., a permutation test. `sample`, with `size` equal to the number of tracts, is used to generate a comparison distribution with the observed number of presences and absences.
+
 The user then defines a cutoff value (e.g., 0.01, 0.05, or 0.10) to define which scores are significantly high or low and which are moderate. The NP score ranges from 0 to 1, and when presences are scarce relative to absences, most NP scores in the comparison distributions will be 0. Therefore, statistically significant low NP scores can only be observed when presences are relatively common. Given the ubiquity of ties, high and low significance must be calculated separately. High scores are those in which the majority of permutation-derived NP scores are lower than the observed NP score, and low scores are those in which the majority of permutation-derived NP scores are higher than the observed NP score.  
 
 ## Combining NP scores with presence / absence values of tracts
 the `NP` function combines the significance designations of NP scores with presence / absence values in two ways.
 
-The simplest is a combination into a categorical variable with six levels:  
+The simplest is a combination into a categorical variable with six levels:
+
 * Present, High NP
 * Present, Moderate NP (indistinguishable from permutation-based NP scores)
 * Present, Low NP
@@ -75,7 +78,8 @@ The simplest is a combination into a categorical variable with six levels:
 * Absent, Moderate NP (indistinguishable from permutation-based NP scores)
 * Absent, Low NP
 
-Slightly more complicated is a determination of cluster membership. Tracts that are designated as cluster members fulfill one of two conditions:   
+Slightly more complicated is a determination of cluster membership. Tracts that are designated as cluster members fulfill one of two conditions:
+
 1. They have material present and have a high NP score, OR
 2. They have material present and are the neighbor of a tract with material present and a high NP score.
 
@@ -84,7 +88,8 @@ These results can then be visualized either within R or any other GIS software f
 
 Visualizing cluster membership produces very simple, striking maps that are easy to interpret, but note that a great deal of information is lost. In particular, there may be tracts with material present that are neighbors of tracts that fulfill condition 2, but not condition 1. These tracts are not identified as cluster members by the `NP` function, so the user may wish to overlay Presence / Absence data on top of the cluster membership visualization.  
 
-The following code shows an example of the use of NPCA to analyze the distribution of Classical period material using the spatial models generated above. These define neighbors as the eight nearest tracts (`swl_nnear`) and all tracts within 500 m (`swl_radius`). The first plot shows the raw presence / absence of this material in the example data (`Clas`). The following plots show the results of NPCA, displaying the combined results variable `Clas_Res` and the cluster membership variable `Clas_mem`.  
+The following code shows an example of the use of NPCA to analyze the distribution of Classical period material using the spatial models generated above. These define neighbors as the eight nearest tracts (`swl_nnear`) and all tracts within 500 m (`swl_radius`). The first plot shows the raw presence / absence of this material in the example data (`Clas`). The following plots show the results of NPCA, displaying the combined results variable `Clas_Res` and the cluster membership variable `Clas_mem`.
+
 Note that, for reasons of efficiency, only 100 permutations are used to generate the comparison datasets. Robust results will require more permutations.  
 
 ```{r, fig.width=7, fig.height = 5, message = FALSE}
@@ -94,14 +99,22 @@ plot(np_near["Clas"])
 
 par(xpd = TRUE)
 plot(np_near["Clas_Res"], col=NP_colors(np_near[["Clas_Res"]]))
-legend("topleft", inset = c(-0.1, -0.1), legend = c("Present, High NP", "Present, Low NP", "Present, Moderate NP", "Absent, High NP", "Absent, Low NP", "Absent, Moderate NP"), fill = c("#e60000", "#feff73", "#ffaa01","#febebe", "#ddd2ff", "#b5d69f"))
+legend("topleft", 
+       inset = c(-0.1, -0.1), 
+       legend = c("Present, High NP", "Present, Low NP", "Present, Moderate NP",
+                  "Absent, High NP", "Absent, Low NP", "Absent, Moderate NP"),
+       fill = c("#e60000", "#feff73", "#ffaa01","#febebe", "#ddd2ff", "#b5d69f"))
 plot(np_near["Clas_mem"])
 
 np_radius<-NP(chron, "Survey_Uni", "Clas", tracts, "UnitID", swl_radius, 100, 0.1)
 
 par(xpd = TRUE)
 plot(np_radius["Clas_Res"], col=NP_colors(np_radius[["Clas_Res"]]))
-legend("topleft", inset = c(-0.1, -0.1), legend = c("Present, High NP", "Present, Low NP", "Present, Moderate NP", "Absent, High NP", "Absent, Low NP", "Absent, Moderate NP"), fill = c("#e60000", "#feff73", "#ffaa01","#febebe", "#ddd2ff", "#b5d69f"))
+legend("topleft", 
+       inset = c(-0.1, -0.1), 
+       legend = c("Present, High NP", "Present, Low NP", "Present, Moderate NP",
+                  "Absent, High NP", "Absent, Low NP", "Absent, Moderate NP"), 
+       fill = c("#e60000", "#feff73", "#ffaa01","#febebe", "#ddd2ff", "#b5d69f"))
 plot(np_radius["Clas_mem"])
 ```
 
