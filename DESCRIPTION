@@ -32,3 +32,5 @@ Suggests:
     rmarkdown,
     knitr
 VignetteBuilder: knitr
+URL: https://github.com/eweaverdyck/nearpresence
+BugReports:https://github.com/eweaverdyck/nearpresence/issues
