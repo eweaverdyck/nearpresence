@@ -119,3 +119,7 @@ plot(np_radius["Clas_mem"])
 ```
 
 Although Classical-period material is distributed throughout the study area, NPCA allows us to identify four major clusters. The precise extent of these clusters depends on the spatial model used. Nevertheless, these results can inform further investigation. The tracts designated Absent, High NP can be reexamined, and the functional range of artifacts found in the tracts identified as cluster members (and possibly their neighbors) can provide evidence about the types of activities that generated these clusters.
+
+# References
+* Anselin, L. 1995. Local indicators of spatial association - LISA. *Geographical Analysis* 27.2, 93-115.
+* Banning, E. B. 2002. *Archaeological survey*. New York, NY: Kluwer Academic/Plenum Publishers.
