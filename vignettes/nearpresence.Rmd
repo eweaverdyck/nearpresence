@@ -48,7 +48,7 @@ Both rely on `sf::st_distance`, as this measures distances between the edges of 
 
 For efficiency, the resulting matrix is converted to a named list of named lists. Each element of the list corresponds to one tract, named using its unique identifier. These elements are themselves lists of weights of each tract's neighbors, again named using the neighbors' unique identifiers. I refer to this list of lists as a spatial weights list, `swl`.
 
-```{r}
+```{r, message = FALSE}
 data(tracts)
 swl_nnear<-IDW_nnear(tracts, "UnitID", 8)
 swl_radius<-IDW_radius(tracts, "UnitID", 500)
@@ -87,7 +87,7 @@ Visualizing cluster membership produces very simple, striking maps that are easy
 The following code shows an example of the use of NPCA to analyze the distribution of Classical period material using the spatial models generated above. These define neighbors as the eight nearest tracts (`swl_nnear`) and all tracts within 500 m (`swl_radius`). The first plot shows the raw presence / absence of this material in the example data (`Clas`). The following plots show the results of NPCA, displaying the combined results variable `Clas_Res` and the cluster membership variable `Clas_mem`.  
 Note that, for reasons of efficiency, only 100 permutations are used to generate the comparison datasets. Robust results will require more permutations.  
 
-```{r fig.width=7, fig.height = 5}
+```{r, fig.width=7, fig.height = 5, message = FALSE}
 data(chron)
 np_near<-NP(chron, "Survey_Uni", "Clas", tracts, "UnitID", swl_nnear, 100, 0.1)
 plot(np_near["Clas"])

@@ -25,7 +25,7 @@ The nearpresence package implements Near Presence Cluster Analysis, a statistica
 This example comes from the Molyvoti, Thrace, Archaeological Project.  
 The following plot shows the distribution of units with Classical-period material in a portion of the survey area: 
 
-```{r example}
+```{r problem illustration, message = FALSE}
 library(nearpresence)
 library(sf)
 data(tracts)
@@ -37,7 +37,7 @@ plot(tr.chr["Clas"])
 
 Spatial structure is difficult to discern. Near Presence Cluster Analysis identifies units that have Classical-period material present and have more neighbors with Classical-material than would be expected under conditions of complete spatial randomness.  
 
-```{r}
+```{r example, message = FALSE}
 data(tracts)
 data(chron)
 np<-NP(chron = chron,
