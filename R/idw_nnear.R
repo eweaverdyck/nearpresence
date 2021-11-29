@@ -12,6 +12,7 @@
 #' @param tracts A spatial object of class \code{sf}
 #' @param tracts_ID Character, the name of the ID column in \code{tracts}
 #' @param n Integer, the number of nearest neighbors
+#' @param verbose Logical. Determines whether messages are displayed during processing
 #' @return returns a named list of named lists. Each list is named for a tract
 #'   in \code{tracts} and contains \code{n} elements. These elements, named for
 #'   the \code{n} nearest neighbors, are the inverse of the distance to the
@@ -21,12 +22,12 @@
 #' @examples IDW_nnear(tracts = tracts, tracts_ID = "UnitID", n = 8)
 
 
-IDW_nnear<-function(tracts, tracts_ID, n){
+IDW_nnear<-function(tracts, tracts_ID, n, verbose = TRUE){
   checkmate::assert_class(tracts, "sf")
   checkmate::assert_names(tracts_ID, subset.of = names(tracts))
   checkmate::assert_count(n)
 
-  print("Calculating distances")
+  if(verbose == TRUE) message("Calculating distances")
   dist<-sf::st_distance(tracts)
   tracts.df<-tracts
   sf::st_geometry(tracts.df)<-NULL
@@ -38,14 +39,14 @@ IDW_nnear<-function(tracts, tracts_ID, n){
   swm<-matrix(data=NA, nrow=nrow(dist), ncol=ncol(dist))
   colnames(swm)<-colnames(dist)
   row.names(swm)<-row.names(dist)
-  print(paste("Finding", n, "nearest neighbors"))
+  if(verbose == TRUE) message(paste("Finding", n, "nearest neighbors"))
   for(u in tracts.df[,tracts_ID]){
     swm[u,] <- ifelse(
       test=names(swm[u,]) %in% names(sort(dist[u,], index.return=TRUE)[1:n]),
       yes=units::set_units(1, units(dist), mode="standard")/(units::set_units(1, units(dist), mode="standard")+dist[u,]),
       no=NA)
   }
-  print("Converting to list")
+  if(verbose == TRUE) message("Converting to list")
   swl<-list()
   length(swl)<-length(sf::st_drop_geometry(tracts)[,tracts_ID])
   names(swl)<-sf::st_drop_geometry(tracts)[,tracts_ID]

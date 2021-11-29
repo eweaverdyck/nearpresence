@@ -43,6 +43,7 @@
 #'   \code{tracts_ID} and \code{chron_ID}. Output of IDW_nnear or IDW_radius
 #' @param perms Positive integer, the number of permutations
 #' @param cut Number < 1, the cutoff value for significance
+#' @param verbose Logical. Determines whether messages are displayed during processing
 #' @return Returns an object of class \code{sf} containing an ID field and six
 #'   fields describing the results of the near presence analysis (see Details)
 #' @seealso \code{\link{IDW_nnear}}, \code{\link{IDW_radius}}
@@ -65,7 +66,7 @@
 #'   perms = 100,
 #'   cut = 0.05)
 
-NP<-function(chron, chron_ID, periods, tracts, tracts_ID, swl, perms, cut){
+NP<-function(chron, chron_ID, periods, tracts, tracts_ID, swl, perms, cut, verbose = TRUE){
   checkmate::assert_data_frame(chron)
   checkmate::assert_names(chron_ID, subset.of = names(chron))
   checkmate::assert_names(periods, subset.of = names(chron))
@@ -81,8 +82,8 @@ NP<-function(chron, chron_ID, periods, tracts, tracts_ID, swl, perms, cut){
   row.names(chron)<-chron[,chron_ID]
   chron<-chron[which(chron[,chron_ID] %in% u),]
   for (p in periods){
-    print(p)
-    print("Calculating observed NP")
+    if(verbose == TRUE) message(p)
+    if(verbose == TRUE) message("Calculating observed NP")
 
     #observed near presence
     obs.np<-list()
@@ -93,7 +94,7 @@ NP<-function(chron, chron_ID, periods, tracts, tracts_ID, swl, perms, cut){
     obs.np<-lapply(swl, FUN=function(x) mean(data[match(names(x),data[,chron_ID]),p]*x))
 
     # Permutations
-    print("Calculating permuted NPs")
+    if(verbose == TRUE) message("Calculating permuted NPs")
     progress_bar = utils::txtProgressBar(min=0, max=perms, style=1, char="=")
     perm.np<-data.frame(matrix(nrow=n, ncol=perms))
     row.names(perm.np)<-u
@@ -103,7 +104,7 @@ NP<-function(chron, chron_ID, periods, tracts, tracts_ID, swl, perms, cut){
       perm.np[,v]<-unlist(lapply(swl, FUN=function(x) mean(data[match(names(x),data[,chron_ID]),p]*x)))
     }
     # Results
-    print("Compiling results")
+    if(verbose == TRUE) message("Compiling results")
     all.np<-merge(unlist(obs.np), perm.np, by=0)
     row.names(all.np)<-all.np$Row.names
     perm.great<-apply(X=all.np[grep("X",names(all.np))]>all.np$x, MARGIN=1, FUN=sum)
