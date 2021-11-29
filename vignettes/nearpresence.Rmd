@@ -1,10 +1,10 @@
 ---
-title: "nearpresence"
+title: "Near Presence Analysis"
 author: "Eli Weaverdyck"
 date: "November 2021"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{nearpresence}
+  %\VignetteIndexEntry{Near Presence Analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,10 +15,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-```{r, include=FALSE}
-library(devtools)
-devtools::load_all(".")
-```
+
 ```{r setup}
 library(nearpresence)
 ```
